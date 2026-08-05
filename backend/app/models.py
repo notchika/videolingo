@@ -31,4 +31,4 @@ class JobStatusResponse(BaseModel):
 
 class TranscribeRequest(BaseModel):
     job_id: str
-    target_language: str  # one of the LANGUAGES keys in config.py
+    target_language: str  # one of the TARGET_LANGUAGES keys in config.py

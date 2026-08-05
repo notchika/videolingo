@@ -79,7 +79,7 @@ export default function App() {
       <p className="eyebrow">Video → subtitles</p>
       <h1>VideoLingo</h1>
       <p className="subtitle">
-        Upload a video under 10 minutes, pick a subtitle language, and get back
+        Upload a video under 25 minutes, pick a subtitle language, and get back
         a timestamped .srt / .vtt file — transcribed and translated locally.
       </p>
 

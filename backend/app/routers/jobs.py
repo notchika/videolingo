@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 
-from app.config import LANGUAGES
+from app.config import TARGET_LANGUAGES
 from app.models import TranscribeRequest, JobStatusResponse
 from app.jobs import get_job, run_pipeline
 
@@ -9,7 +9,7 @@ router = APIRouter()
 
 @router.post("/process")
 def start_processing(req: TranscribeRequest, background_tasks: BackgroundTasks):
-    if req.target_language not in LANGUAGES:
+    if req.target_language not in TARGET_LANGUAGES:
         raise HTTPException(400, f"Unknown target language '{req.target_language}'")
 
     job = get_job(req.job_id)

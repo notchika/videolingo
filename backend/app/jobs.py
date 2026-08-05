@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, Optional
 from dataclasses import dataclass, field
 
-from app.config import UPLOAD_DIR, OUTPUT_DIR, LANGUAGES
+from app.config import UPLOAD_DIR, OUTPUT_DIR, WHISPER_TO_NLLB
 from app.models import JobStatus
 from app.pipeline import audio_extract, transcribe, translate, subtitles
 
@@ -63,12 +63,13 @@ def run_pipeline(job_id: str, target_language: str):
         # 3. Translate
         job.status = JobStatus.TRANSLATING
         job.progress_message = f"Translating from {detected_lang} to {target_language}"
-        source_nllb = LANGUAGES.get(detected_lang, {}).get("nllb")
-        target_nllb = LANGUAGES[target_language]["nllb"]
+        source_nllb = WHISPER_TO_NLLB.get(detected_lang)
+        target_nllb = target_language  # dropdown value IS the NLLB/FLORES-200 code
 
         if source_nllb is None:
-            # Whisper detected a language outside our 15-language map; fall back to
-            # treating the transcript as-is (no translation) rather than failing the job.
+            # Whisper detected a language with no NLLB equivalent (Latin, Breton,
+            # or Hawaiian) or one outside our table; fall back to leaving the
+            # transcript untranslated rather than failing the job.
             translated_texts = [s.text for s in segments]
         else:
             translated_texts = translate.translate_batch(

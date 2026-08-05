@@ -24,7 +24,7 @@ export default function UploadForm({ onFileSelected, selectedFile, duration }) {
       >
         <div className="dropzone-label">
           <strong>Click to browse</strong> or drag a video here
-          <div style={{ marginTop: 6 }}>MP4, MOV, MKV, WEBM · up to 10 minutes</div>
+          <div style={{ marginTop: 6 }}>MP4, MOV, MKV, WEBM · up to 25 minutes</div>
         </div>
         <input
           ref={inputRef}

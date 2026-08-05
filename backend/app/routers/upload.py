@@ -7,7 +7,7 @@ from app.config import (
     MAX_VIDEO_SECONDS,
     MAX_UPLOAD_BYTES,
     ALLOWED_VIDEO_EXTENSIONS,
-    LANGUAGES,
+    TARGET_LANGUAGES,
 )
 from app.pipeline.audio_extract import get_duration_seconds
 from app.models import UploadResponse
@@ -18,7 +18,10 @@ router = APIRouter()
 
 @router.get("/languages")
 def list_languages():
-    return [{"code": code, "name": info["name"]} for code, info in LANGUAGES.items()]
+    return [
+        {"code": code, "name": name}
+        for code, name in sorted(TARGET_LANGUAGES.items(), key=lambda x: x[1])
+    ]
 
 
 @router.post("/upload", response_model=UploadResponse)
