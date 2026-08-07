@@ -4,9 +4,9 @@ import aiofiles
 
 from app.config import (
     UPLOAD_DIR,
-    MAX_VIDEO_SECONDS,
+    MAX_MEDIA_SECONDS,
     MAX_UPLOAD_BYTES,
-    ALLOWED_VIDEO_EXTENSIONS,
+    ALLOWED_MEDIA_EXTENSIONS,
     TARGET_LANGUAGES,
 )
 from app.pipeline.audio_extract import get_duration_seconds
@@ -25,10 +25,10 @@ def list_languages():
 
 
 @router.post("/upload", response_model=UploadResponse)
-async def upload_video(file: UploadFile = File(...)):
+async def upload_media(file: UploadFile = File(...)):
     ext = Path(file.filename).suffix.lower()
-    if ext not in ALLOWED_VIDEO_EXTENSIONS:
-        raise HTTPException(400, f"Unsupported file type '{ext}'. Allowed: {sorted(ALLOWED_VIDEO_EXTENSIONS)}")
+    if ext not in ALLOWED_MEDIA_EXTENSIONS:
+        raise HTTPException(400, f"Unsupported file type '{ext}'. Allowed: {sorted(ALLOWED_MEDIA_EXTENSIONS)}")
 
     job_temp_name = f"upload_{Path(file.filename).stem}{ext}"
     dest_path = UPLOAD_DIR / job_temp_name
@@ -44,11 +44,11 @@ async def upload_video(file: UploadFile = File(...)):
             await out.write(chunk)
 
     duration = get_duration_seconds(dest_path)
-    if duration > MAX_VIDEO_SECONDS:
+    if duration > MAX_MEDIA_SECONDS:
         dest_path.unlink(missing_ok=True)
         raise HTTPException(
             400,
-            f"Video is {duration/60:.1f} minutes long. Max allowed is {MAX_VIDEO_SECONDS // 60} minutes."
+            f"File is {duration/60:.1f} minutes long. Max allowed is {MAX_MEDIA_SECONDS // 60} minutes."
         )
 
     job = create_job(dest_path)

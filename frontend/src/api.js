@@ -6,7 +6,7 @@ export async function fetchLanguages() {
   return res.json();
 }
 
-export async function uploadVideo(file) {
+export async function uploadMedia(file) {
   const form = new FormData();
   form.append("file", file);
   const res = await fetch(`${BASE_URL}/upload`, { method: "POST", body: form });

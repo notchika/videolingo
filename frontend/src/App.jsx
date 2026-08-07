@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import UploadForm from "./components/UploadForm.jsx";
 import LanguageSelector from "./components/LanguageSelector.jsx";
 import JobStatus from "./components/JobStatus.jsx";
-import { fetchLanguages, uploadVideo, startProcessing, getStatus } from "./api";
+import { fetchLanguages, uploadMedia, startProcessing, getStatus } from "./api";
 
 export default function App() {
   const [languages, setLanguages] = useState([]);
@@ -29,7 +29,7 @@ export default function App() {
 
     try {
       setBusy(true);
-      const res = await uploadVideo(selected);
+      const res = await uploadMedia(selected);
       setJobId(res.job_id);
       setDuration(res.duration_seconds);
     } catch (e) {
@@ -76,11 +76,11 @@ export default function App() {
 
   return (
     <>
-      <p className="eyebrow">Video → subtitles</p>
+      <p className="eyebrow">Video or audio → subtitles</p>
       <h1>VideoLingo</h1>
       <p className="subtitle">
-        Upload a video under 25 minutes, pick a subtitle language, and get back
-        a timestamped .srt / .vtt file — transcribed and translated locally.
+        Upload a video or audio message under 25 minutes, pick a subtitle language,
+        and get back a timestamped .srt / .vtt file — transcribed and translated locally.
       </p>
 
       <UploadForm onFileSelected={handleFileSelected} selectedFile={file} duration={duration} />
@@ -101,7 +101,7 @@ export default function App() {
 
       {finished && (
         <button className="primary" style={{ marginTop: 4 }} onClick={handleReset}>
-          Transcribe another video
+          Transcribe another file
         </button>
       )}
     </>

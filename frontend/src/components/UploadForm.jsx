@@ -10,7 +10,7 @@ export default function UploadForm({ onFileSelected, selectedFile, duration }) {
 
   return (
     <div className="panel">
-      <label className="field-label">Video file</label>
+      <label className="field-label">Video or audio file</label>
       <div
         className={`dropzone ${dragOver ? "dragover" : ""}`}
         onClick={() => inputRef.current.click()}
@@ -23,13 +23,13 @@ export default function UploadForm({ onFileSelected, selectedFile, duration }) {
         }}
       >
         <div className="dropzone-label">
-          <strong>Click to browse</strong> or drag a video here
-          <div style={{ marginTop: 6 }}>MP4, MOV, MKV, WEBM · up to 25 minutes</div>
+          <strong>Click to browse</strong> or drag a video or audio file here
+          <div style={{ marginTop: 6 }}>MP4, MOV, MKV, WEBM, MP3, WAV, M4A, AAC, OGG, FLAC · up to 25 minutes</div>
         </div>
         <input
           ref={inputRef}
           type="file"
-          accept="video/*"
+          accept="video/*,audio/*"
           hidden
           onChange={(e) => handleFiles(e.target.files)}
         />

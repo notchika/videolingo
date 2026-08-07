@@ -8,16 +8,18 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # --- Limits ---
-MAX_VIDEO_SECONDS = 25 * 60  # 25 minute cap
+MAX_MEDIA_SECONDS = 25 * 60  # 25 minute cap, applies to both video and audio-only uploads
 MAX_UPLOAD_BYTES = 500 * 1024 * 1024  # 500MB safety ceiling on file size
 ALLOWED_VIDEO_EXTENSIONS = {".mp4", ".mov", ".mkv", ".webm", ".avi"}
+ALLOWED_AUDIO_EXTENSIONS = {".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac", ".wma", ".opus"}
+ALLOWED_MEDIA_EXTENSIONS = ALLOWED_VIDEO_EXTENSIONS | ALLOWED_AUDIO_EXTENSIONS
 
 # --- Models ---
 WHISPER_MODEL_SIZE = "base"
 WHISPER_COMPUTE_TYPE = "int8"
 NLLB_MODEL_NAME = "facebook/nllb-200-distilled-600M"
 
-# --- Source languages (what Whisper can recognize being spoken in a video) ---
+# --- Source languages (what Whisper can recognize being spoken in a video or audio file) ---
 # Whisper supports 100 source languages; 97 have a direct NLLB-200 equivalent for
 # translation. The 3 without one (Latin, Breton, Hawaiian) are omitted here -
 # if Whisper detects one of these, jobs.py falls back to leaving the transcript

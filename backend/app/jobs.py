@@ -12,7 +12,7 @@ from app.pipeline import audio_extract, transcribe, translate, subtitles
 @dataclass
 class Job:
     id: str
-    video_path: Path
+    media_path: Path
     status: JobStatus = JobStatus.QUEUED
     progress_message: str = "Queued"
     detected_source_language: Optional[str] = None
@@ -25,9 +25,9 @@ class Job:
 JOBS: Dict[str, Job] = {}
 
 
-def create_job(video_path: Path) -> Job:
+def create_job(media_path: Path) -> Job:
     job_id = str(uuid.uuid4())
-    job = Job(id=job_id, video_path=video_path)
+    job = Job(id=job_id, media_path=media_path)
     JOBS[job_id] = job
     return job
 
@@ -46,9 +46,9 @@ def run_pipeline(job_id: str, target_language: str):
     try:
         # 1. Extract audio
         job.status = JobStatus.EXTRACTING_AUDIO
-        job.progress_message = "Extracting audio from video"
+        job.progress_message = "Extracting audio"
         wav_path = UPLOAD_DIR / f"{job_id}.wav"
-        audio_extract.extract_audio(job.video_path, wav_path)
+        audio_extract.extract_audio(job.media_path, wav_path)
 
         # 2. Transcribe
         job.status = JobStatus.TRANSCRIBING
